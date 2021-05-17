@@ -1,0 +1,11 @@
+{
+    "apps": [
+        {
+            "name": "stackgo-controller",
+            "script": "./server.ts",
+            "watch": ["./src"],
+            "instances": 0,
+            "exec_mode": "cluster"
+        }
+    ]
+}

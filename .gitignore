@@ -1,0 +1,22 @@
+node_modules/**/*
+build/**/*
+certs/**/*
+
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+
+# dotenv environment variables file
+.env
+.env.test
+
+package-lock.json
+StackGo-8b51611fd586.json
+cloud_sql_proxy
+../.DS_Store
+./src/.DS_Store
+env_variables.yaml
+/.env-prod

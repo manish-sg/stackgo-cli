@@ -1,0 +1,1 @@
+export const VALID_STATUS_LIST = ['ACTIVE', 'INACTIVE'];
