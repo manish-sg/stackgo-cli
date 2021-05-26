@@ -3,10 +3,10 @@ import axios from 'axios';
 import validator from '../validators/marketplace-validator';
 
 const NAMESPACE = 'MARKETPLACE CLIENT';
-const config = { headers: { 'Content-Type': 'application/json' } };
 
-const getAllMarketPlaces = async () => {
+const getAllMarketPlaces = async (token: string) => {
     try {
+        const config = { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
         const result = await axios.get(`${process.env.API_BASE_URL}/headless/marketplace/get-all-marketplaces`, config);
         logging.info(NAMESPACE, 'Response: ', result.data);
         return result.data;
@@ -15,8 +15,9 @@ const getAllMarketPlaces = async () => {
     }
 };
 
-const getAvailableIntegrationOptions = async (email: string) => {
+const getAvailableIntegrationOptions = async (email: string, token: string) => {
     try {
+        const config = { headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } };
         const result = await validator.emailValidation.validateAsync(email);
         const response = await axios.get(`${process.env.API_BASE_URL}/headless/marketplace/get-available-integration-options/${result.email}`, config);
         logging.info(NAMESPACE, 'Response: ', response.data);
