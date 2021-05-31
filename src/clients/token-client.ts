@@ -1,13 +1,13 @@
 import logging from '../config/logging';
-var request = require('request');
 import axios from 'axios';
 import qs from 'qs';
 
 const NAMESPACE = 'TOKEN CLIENT';
 
 const config = { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } };
-
-const getToken = async (clientId: string, clientSecret: string) => {
+var tokenResponse: { access_token: string } | null = null;
+var successCall = false;
+const authenticate = async (clientId: string, clientSecret: string) => {
     logging.info(NAMESPACE, `Client id ${clientId}, Secret ${clientSecret} `);
     const req = {
         client_id: clientId,
@@ -18,6 +18,11 @@ const getToken = async (clientId: string, clientSecret: string) => {
 
     const result = await axios.post(`https://stackgo.au.auth0.com/oauth/token`, qs.stringify(req), config);
     logging.info(NAMESPACE, 'Token response: ', result.data);
+    if (result.data !== null && result.data['access_token'] !== null) {
+        successCall = true;
+        tokenResponse = result.data;
+    }
     return result.data;
 };
-export default { getToken };
+
+export default { authenticate, successCall, tokenResponse };
