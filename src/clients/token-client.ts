@@ -4,9 +4,12 @@ import qs from 'qs';
 
 const NAMESPACE = 'TOKEN CLIENT';
 
+export class Token {
+    public static tokenResponse: { access_token: string } | null = null;
+    public static successCall = false;
+}
+
 const config = { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } };
-var tokenResponse: { access_token: string } | null = null;
-var successCall = false;
 const authenticate = async (clientId: string, clientSecret: string) => {
     logging.info(NAMESPACE, `Client id ${clientId}, Secret ${clientSecret} `);
     const req = {
@@ -19,10 +22,10 @@ const authenticate = async (clientId: string, clientSecret: string) => {
     const result = await axios.post(`https://stackgo.au.auth0.com/oauth/token`, qs.stringify(req), config);
     logging.info(NAMESPACE, 'Token response: ', result.data);
     if (result.data !== null && result.data['access_token'] !== null) {
-        successCall = true;
-        tokenResponse = result.data;
+        Token.successCall = true;
+        Token.tokenResponse = result.data;
     }
     return result.data;
 };
 
-export default { authenticate, successCall, tokenResponse };
+export default { authenticate };

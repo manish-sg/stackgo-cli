@@ -1,5 +1,6 @@
 import client from '../clients/marketplace-client';
 import tokenClient from '../clients/token-client';
+import {Token} from '../clients/token-client';
 import logging from '../config/logging';
 import jwt from 'jsonwebtoken';
 
@@ -13,7 +14,7 @@ const test = async () => {
 };
 
 const getAllMarketPlaces = async () => {
-    const response = await client.getAllMarketPlaces(await verifyAndReturnToken(tokenClient.tokenResponse));
+    const response = await client.getAllMarketPlaces(await verifyAndReturnToken(Token.tokenResponse));
     logging.info(NAMESPACE, 'Response:', response);
 };
 
@@ -23,7 +24,8 @@ const getAvailableIntegrationOptions = async (email: string, token: string) => {
 };
 
 const verifyAndReturnToken = async (response: any) => {
-    if (tokenClient.successCall === true) {
+    logging.debug(NAMESPACE, `successCall = ${Token.successCall} Response = ${response}`);
+    if (Token.successCall === true) {
         const decodedToken: any = jwt.decode(response?.access_token);
         if (decodedToken['exp'] !== null && Date.now() / 1000 < decodedToken['exp'] - 100) {
             return response?.access_token;
